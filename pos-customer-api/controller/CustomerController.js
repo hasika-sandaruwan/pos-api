@@ -15,8 +15,11 @@ const saveCustomer =(req,resp)=>{
         customerAddress: req.body.customerAddress
     });
 
-    console.log(customer);
-
+    customer.save().then(result => {
+        resp.status(200).json({state: true, "message": "Saved"});
+    }).catch(error => {
+        resp.status(500).json(error)
+    });
 }
 const deleteCustomer = (req, resp) => {
 }
@@ -25,6 +28,11 @@ const getCustomer = (req, resp) => {
 const updateCustomer = (req, resp) => {
 }
 const getAllCustomers = (req, resp) => {
+    Customer.find().then(result => {
+        resp.status(200).json({dataSet: result});
+    }).catch(error => {
+        resp.status(500).json(error);
+    });
 }
 
 module.exports = {
