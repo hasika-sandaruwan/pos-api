@@ -22,6 +22,15 @@ const saveCustomer =(req,resp)=>{
     });
 }
 const deleteCustomer = (req, resp) => {
+    Customer.deleteOne({customerId: req.headers.id}).then(deleteResponse => {
+        if (deleteResponse.deletedCount > 0) {
+            resp.status(200).json({message: 'Deleted'});
+        } else {
+            resp.status(200).json({message: 'Try Again'});
+        }
+    }).catch(error => {
+        resp.status(500).json(error)
+    })
 }
 const getCustomer = (req, resp) => {
 }
