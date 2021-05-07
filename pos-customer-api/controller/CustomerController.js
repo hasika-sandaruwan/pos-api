@@ -1,6 +1,6 @@
 const Customer = require('../model/CustomerSchema');
 
-const saveCustomer =(req,resp)=>{
+const saveCustomer = (req, resp) => {
     /*
     * POST(save)--->(body)
     * GET(fetch)--->(headers)
@@ -33,9 +33,32 @@ const deleteCustomer = (req, resp) => {
     })
 }
 const getCustomer = (req, resp) => {
+
 }
+
 const updateCustomer = (req, resp) => {
+    Customer.updateOne(
+        {customerId: req.body.id},
+        {
+            $set: {
+                customerName: req.body.name,
+                customerSalary: req.body.salary,
+                customerAddress: req.body.address
+            }
+        }
+    ).then(updateResult => {
+
+        if (updateResult.nModified > 0) {
+            resp.status(200).json({message: 'updated'});
+        } else {
+            resp.status(200).json({message: 'try Again'});
+        }
+
+    }).catch(updateError => {
+        resp.status(500).json(updateError);
+    })
 }
+
 const getAllCustomers = (req, resp) => {
     Customer.find().then(result => {
         resp.status(200).json({dataSet: result});
