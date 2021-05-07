@@ -33,10 +33,19 @@ const deleteCustomer = (req, resp) => {
     })
 }
 const getCustomer = (req, resp) => {
-
+    Customer.findOne({customerId: req.headers.id}).then(result => {
+        if (result !== null) {
+            resp.status(200).json({state: true, data: result});
+        } else {
+            resp.status(200).json({state: false});
+        }
+    }).catch(error => {
+        resp.status(500).json(error);
+    })
 }
 
 const updateCustomer = (req, resp) => {
+    console.log(req.body);
     Customer.updateOne(
         {customerId: req.body.id},
         {
@@ -47,7 +56,7 @@ const updateCustomer = (req, resp) => {
             }
         }
     ).then(updateResult => {
-
+        console.log(updateResult);
         if (updateResult.nModified > 0) {
             resp.status(200).json({message: 'updated'});
         } else {
